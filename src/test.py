@@ -76,7 +76,10 @@ def interact_model(
 raw_text = input("С чего начать >>> ")
 context_tokens = enc.encode(raw_text)
 generated = 0
-text = enc.decode(context_tokens)
+out = sess.run(output, feed_dict={
+    context: [context_tokens for _ in range(batch_size)]
+})[:, len(context_tokens):]
+text = enc.decode(out[0])
 print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
 print(text)
 print("=" * 80)
