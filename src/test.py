@@ -75,17 +75,18 @@ def interact_model(
             
             
             
-            for _ in range(2):
-                out = sess.run(output, feed_dict={
-                    context: [context_tokens for _ in range(batch_size)]
-                })[:, len(context_tokens):]
-                for i in range(2):
-                    generated += 1
-                    text = enc.decode(out[i])
-                    print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    print(text)
-            print("=" * 80)
+        saver = tf.train.Saver()
+        ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
+        saver.restore(sess, ckpt)
 
+        generated = 0
+        while nsamples == 0 or generated < nsamples:
+            out = sess.run(output)
+            for i in range(batch_size):
+                generated += batch_size
+                text = enc.decode(out[i])
+                print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
+                print(text)
 
 if __name__ == '__main__':
     fire.Fire(interact_model)
