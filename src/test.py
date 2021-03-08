@@ -65,11 +65,12 @@ def interact_model(
             for _ in range(nsamples // batch_size):
                 out = sess.run(output, feed_dict={
                     context: [context_tokens for _ in range(batch_size)]
-                })[0, len(context_tokens):]
+                })[:, len(context_tokens):]
                 for i in range(batch_size):
                     generated += 1
                     text = enc.decode(out[i])
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
+                    print(text)
                     print(text)
             print("=" * 80)
 
