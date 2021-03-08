@@ -73,14 +73,10 @@ def interact_model(
 #                     print(text)
 #             print("=" * 80)
             
-            
-            
-        saver = tf.train.Saver()
-        ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
-        saver.restore(sess, ckpt)
+
 
         generated = 0
-        while nsamples == 0 or generated < nsamples:
+        for i in range(2):
             out = sess.run(output)
             for i in range(batch_size):
                 generated += batch_size
